@@ -1,9 +1,9 @@
-APP := exec
-CTX := calcu
-VERSION := v1
-CC		:= gcc
-UTILPATH := util
-UTILSRC	 := $(shell find $(UTILPATH) -type f -iname "*.c")
+APP 		:= exec
+CTX 		:= calcu
+VERSION 	:= v1
+CC			:= gcc
+UTILPATH 	:= util
+UTILSRC	 	:= $(shell find $(UTILPATH) -type f -iname "*.c")
 INCLUDEPATH := -I .
 LIBS		:= -ll
 

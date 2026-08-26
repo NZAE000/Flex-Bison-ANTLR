@@ -1,7 +1,7 @@
-flex/exec
-flex/calcu/exec
-flex/*.o
-flex/calcu/*.o
-flex/draw-robot/*.o
-flex/draw-robot/exec
-bison/calcu/exec
+flex-bison/flex/exec
+flex-bison/flex/calcu/exec
+flex-bison/flex/*.o
+flex-bison/flex/calcu/*.o
+flex-bison/flex/draw-robot/*.o
+flex-bison/flex/draw-robot/exec
+flex-bison/bison/calcu/exec
