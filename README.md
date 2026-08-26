@@ -1,3 +1,9 @@
+# Language Implementation with Lexical and Syntax Analysis using Flex-Bison and ANTLR
+
+This repository contains practical exercises focused on understanding and applying **lexical and syntax analysis** using **Flex-Bison** and **ANTLR**. The main purpose is to understand the separation between lexical analysis (token recognition) and syntax analysis (grammar and structure recognition), and how these stages can be combined to implement programming languages, domain-specific languages (DSLs), interpreters, calculators, and other programs based on language-processing techniques.
+
+The exercises progress from simple lexical analyzers to applications that integrate lexical and syntax analysis.
+
 # Setup
 
 ## Install Flex and Bison
