@@ -9,7 +9,7 @@ LIBS		:= -ll
 
 
 # target : dependences
-# rules
+# 	rules
 
 .PHONY : clean cleanall
 

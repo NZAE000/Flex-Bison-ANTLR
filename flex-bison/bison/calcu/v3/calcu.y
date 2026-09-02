@@ -14,6 +14,7 @@ void yyerror(const char*);
     float fval;
 }
 
+/* Terminal types */
 %token<fval> NUMBER
 %token SUM
 %token SUB
@@ -22,7 +23,7 @@ void yyerror(const char*);
 %token ABS
 %token ENDLINE
 
-/*No-terminals types*/
+/* No-terminal types */
 %type<fval> expression term factor
 
 /* Grammar rules */

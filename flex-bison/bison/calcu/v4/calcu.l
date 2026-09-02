@@ -4,9 +4,13 @@
 #include <string.h>
 %}
 
-%%
+/* RE definitions */
+digit   [0-9]
+number  {digit}+("."{digit}+)?
 
-[0-9]+              { yylval.fval = atof(yytext); return NUMBER; }
+/* Token detection with RE */
+%%
+{number}               { yylval.fval = atof(yytext); return NUMBER; }
 [a-zA-Z_][a-zA-Z0-9_]* {
                         yylval.sval = find_symbol(yytext);
                         if (!yylval.sval)

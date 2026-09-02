@@ -13,6 +13,7 @@ void yyerror(const char*);
     float fval;
 }
 
+/* Terminal types */
 %token<fval> NUMBER
 %token SUM
 %token SUB
@@ -21,17 +22,18 @@ void yyerror(const char*);
 %token ABS
 %token ENDLINE
 
-/*No-terminals types*/
+/* No-terminal types */
 %type<fval> expression term
 
 /* Grammar rules */
 
 /* 2 */
 /* 2+3+5 */
+/* 2-3-5 */
 
 %%
 input: 
-    | input expression ENDLINE { printf("%f\n", $2);    }
+    | input expression ENDLINE { printf("%f\n", $2); }
     | input ENDLINE
     ;
 expression: term
@@ -48,7 +50,7 @@ term: NUMBER
 
 void yyerror(const char* mssg)
 {   
-    printf("penca %s", mssg);
+    printf("penca %s\n", mssg);
 }
 
 int 

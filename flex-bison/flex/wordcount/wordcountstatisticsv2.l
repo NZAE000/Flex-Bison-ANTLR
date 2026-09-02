@@ -105,7 +105,7 @@ main()
         }
     }
 
-    printf("Stadistics..\n\n");
+    printf("Statistics..\n\n");
     for (unsigned i=0; i<STORAGE_CAPACITY; ++i)
     {
         WordData_t* wdata = &wordata_storage[i];

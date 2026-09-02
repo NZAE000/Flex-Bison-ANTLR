@@ -4,4 +4,5 @@ flex-bison/flex/*.o
 flex-bison/flex/calcu/*.o
 flex-bison/flex/draw-robot/*.o
 flex-bison/flex/draw-robot/exec
+flex-bison/bison/wordcount/exec
 flex-bison/bison/calcu/exec

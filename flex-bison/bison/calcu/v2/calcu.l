@@ -3,10 +3,13 @@
 #include "calcu.tab.h"
 %}
 
-/* Tokens rules (RE)*/
+/* RE definitions */
+digit   [0-9]
+number  {digit}+("."{digit}+)?
 
+/* Token detection with RE */
 %%
-[0-9]+      { yylval.fval = atoi(yytext); return NUMBER; }
+{number}    { yylval.fval = atof(yytext); return NUMBER; }
 "+"         { return SUM; }
 "-"         { return SUB; }
 "*"         { return MULT; }
