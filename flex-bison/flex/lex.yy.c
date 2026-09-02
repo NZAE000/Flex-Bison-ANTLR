@@ -478,15 +478,16 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "wordcount/wordcountstatistics.l"
+#line 1 "wordcount/wordcountstatisticsv2.l"
 /* Headres, definitions, declarations */
-#line 5 "wordcount/wordcountstatistics.l"
+#line 5 "wordcount/wordcountstatisticsv2.l"
 
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h> 
 
-#define CAPACITY 35
+#define DATA_CAPACITY 35
+#define STORAGE_CAPACITY 6
 
 enum Token {
     NEWLINES_W = 256,
@@ -498,10 +499,10 @@ enum Token {
     VALUE
 };
 
-#line 501 "lex.yy.c"
+#line 502 "lex.yy.c"
 /* Regular definitions */
 /* Token detection rules with RE */
-#line 504 "lex.yy.c"
+#line 505 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -718,9 +719,9 @@ YY_DECL
 		}
 
 	{
-#line 29 "wordcount/wordcountstatistics.l"
+#line 30 "wordcount/wordcountstatisticsv2.l"
 
-#line 723 "lex.yy.c"
+#line 724 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -779,56 +780,56 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 30 "wordcount/wordcountstatistics.l"
+#line 31 "wordcount/wordcountstatisticsv2.l"
 { return NEWLINES_W;    }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 31 "wordcount/wordcountstatistics.l"
+#line 32 "wordcount/wordcountstatisticsv2.l"
 { return WORDS_W;       }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 32 "wordcount/wordcountstatistics.l"
+#line 33 "wordcount/wordcountstatisticsv2.l"
 { return NUMBERS_W;     }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 33 "wordcount/wordcountstatistics.l"
+#line 34 "wordcount/wordcountstatisticsv2.l"
 { return CHARACTERS_W;  }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 34 "wordcount/wordcountstatistics.l"
+#line 35 "wordcount/wordcountstatisticsv2.l"
 { return SPACES_W;      }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 35 "wordcount/wordcountstatistics.l"
+#line 36 "wordcount/wordcountstatisticsv2.l"
 { return OTHERS_W;      }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 36 "wordcount/wordcountstatistics.l"
+#line 37 "wordcount/wordcountstatisticsv2.l"
 { return VALUE;         }
 	YY_BREAK
 case 8:
 /* rule 8 can match eol */
 YY_RULE_SETUP
-#line 37 "wordcount/wordcountstatistics.l"
+#line 38 "wordcount/wordcountstatisticsv2.l"
 { /* Ignore whitespace */ }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 38 "wordcount/wordcountstatistics.l"
+#line 39 "wordcount/wordcountstatisticsv2.l"
 { /* Ignore others */ }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 39 "wordcount/wordcountstatistics.l"
+#line 40 "wordcount/wordcountstatisticsv2.l"
 ECHO;
 	YY_BREAK
-#line 831 "lex.yy.c"
+#line 832 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1833,13 +1834,12 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 39 "wordcount/wordcountstatistics.l"
+#line 40 "wordcount/wordcountstatisticsv2.l"
 
 
 /* Functions */
 
-
-void statistics(char const* word, int* vals, int size)
+void statistics(char const* word, unsigned* vals, int size)
 {
     printf("%s\n", word);
 
@@ -1863,30 +1863,46 @@ void statistics(char const* word, int* vals, int size)
     printf("\tStdd %f\n", stdd);
 }
 
+typedef struct wordData { /* Storage data of some word (ER) belong this languge: 'Lines', 'Words', 'NUmbers', etc */
+
+    char const* word_;
+    enum Token  token_;
+    unsigned*   data_;
+    unsigned    size_;
+
+} WordData_t;
+
 int
 main()
 {
-    int token;
+    int token = 0;
 
-    // Vectors
-    int* line_vals      = (int*) malloc(CAPACITY * sizeof(int));
-    int* word_vals      = (int*) malloc(CAPACITY * sizeof(int));
-    int* number_vals    = (int*) malloc(CAPACITY * sizeof(int));
-    int* character_vals = (int*) malloc(CAPACITY * sizeof(int));
-    int* space_vals     = (int*) malloc(CAPACITY * sizeof(int));
-    int* other_vals    = (int*) malloc(CAPACITY * sizeof(int));
+    WordData_t wordata_storage[STORAGE_CAPACITY] = 
+    {
+        { "Lines:",      NEWLINES_W,   (unsigned*) malloc(DATA_CAPACITY * sizeof(unsigned)), 0},
+        { "Words:",      WORDS_W,      (unsigned*) malloc(DATA_CAPACITY * sizeof(unsigned)), 0},
+        { "Numbers:",    NUMBERS_W,    (unsigned*) malloc(DATA_CAPACITY * sizeof(unsigned)), 0},
+        { "Characters:", CHARACTERS_W, (unsigned*) malloc(DATA_CAPACITY * sizeof(unsigned)), 0},
+        { "Spaces:",     SPACES_W,     (unsigned*) malloc(DATA_CAPACITY * sizeof(unsigned)), 0},
+        { "Others:",     OTHERS_W,     (unsigned*) malloc(DATA_CAPACITY * sizeof(unsigned)), 0},
+    };
 
-    // Counter
-    int line_count   = 0;
-    int word_count   = 0;
-    int number_count = 0;
-    int char_count   = 0;
-    int space_count  = 0;
-    int other_count  = 0;
 
     while ((token = yylex()) != 0)  // Without `return`, `yylex()` continues searching for lexemes until EOF. With `return`, `yylex()` delivers a token and relinquishes control to the caller.
     {
-        switch (token) 
+        for (unsigned i=0; i<STORAGE_CAPACITY; ++i)
+        {   
+            WordData_t* wdata = &wordata_storage[i];
+            if (token == wdata->token_)
+                if (yylex() == VALUE)
+                {
+                    unsigned val = (unsigned) atoi(yytext);
+                    *(wdata->data_ + wdata->size_) = val;
+                    ++wdata->size_;
+                }
+        }
+
+        /*switch (token) 
         {
             case NEWLINES_W:
                 if (yylex() == VALUE){
@@ -1938,24 +1954,33 @@ main()
 
             default:
                 break;
-        }
+        }*/
     }
 
     printf("Stadistics..\n\n");
-    statistics("Lines", line_vals, line_count);
-    statistics("Words", word_vals, word_count);
-    statistics("Numbers", number_vals, number_count);
-    statistics("Characters", character_vals, char_count);
-    statistics("Spaces", space_vals, space_count);
-    statistics("Others", other_vals, other_count);
+    //statistics("Lines", line_vals, line_count);
+    //statistics("Words", word_vals, word_count);
+    //statistics("Numbers", number_vals, number_count);
+    //statistics("Characters", character_vals, char_count);
+    //statistics("Spaces", space_vals, space_count);
+    //statistics("Others", other_vals, other_count);
+    for (unsigned i=0; i<STORAGE_CAPACITY; ++i)
+    {
+        WordData_t* wdata = &wordata_storage[i];
+        statistics(wdata->word_, wdata->data_, wdata->size_);
+    }
+
+
 
     // Free!
-    free(line_vals);
-    free(word_vals);
-    free(number_vals);
-    free(character_vals);
-    free(space_vals);
-    free(other_vals);
+    //free(line_vals);
+    //free(word_vals);
+    //free(number_vals);
+    //free(character_vals);
+    //free(space_vals);
+    //free(other_vals);
+    for (unsigned i=0; i<STORAGE_CAPACITY; ++i)
+        free(wordata_storage[i].data_);
 
     return 0;
 }

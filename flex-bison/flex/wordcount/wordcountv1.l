@@ -1,4 +1,5 @@
-/* %option noyywrap It tells the generated code not to call yywrap(); Flex takes care of terminating when it finds EOF. */
+/* It tells the generated code not to call yywrap(); Flex takes care of terminating when it finds EOF. */
+%option noyywrap
 
 /* Headers - Declarations - Definitions */
 %{
@@ -25,10 +26,6 @@ uint32_t n_others  = 0;
 
 
 /* Functions */
-
-int yywrap(void) {
-    return 1; /* There are no more inputs. */
-}
 
 int main(void)
 {
